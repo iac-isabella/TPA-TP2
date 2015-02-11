@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Estruturas de dados">
+      <UniqueIdentifier>{3442ff01-2a4b-4b90-ad7a-983d99d126cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Estruturas de dados">
+      <UniqueIdentifier>{2cdaae3e-740a-4935-b86d-a9c5566b8788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Criação Matriz do Sistema">
+      <UniqueIdentifier>{0d9c6717-aa39-481d-9907-5169b7719724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Criação Matriz do Sistema">
+      <UniqueIdentifier>{a198cfd1-9fbb-44e8-8844-564bc66d41aa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ManipulaVetorBinario.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Principal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrizSistema.cpp">
+      <Filter>Resource Files\Criação Matriz do Sistema</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrizEsparsa.cpp">
+      <Filter>Resource Files\Estruturas de dados</Filter>
+    </ClCompile>
+    <ClCompile Include="csparse.cpp">
+      <Filter>Resource Files\Estruturas de dados</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ManipulaVetorBinario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrizSistema.h">
+      <Filter>Header Files\Criação Matriz do Sistema</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrizEsparsa.h">
+      <Filter>Header Files\Estruturas de dados</Filter>
+    </ClInclude>
+    <ClInclude Include="csparse.h">
+      <Filter>Header Files\Estruturas de dados</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
