@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\Criação Matriz do Sistema">
       <UniqueIdentifier>{a198cfd1-9fbb-44e8-8844-564bc66d41aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Leitura de Arquivos">
+      <UniqueIdentifier>{b674d7ce-03ff-4340-90e9-ef29c5bb5575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ManipulaVetorBinario.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="csparse.cpp">
       <Filter>Resource Files\Estruturas de dados</Filter>
+    </ClCompile>
+    <ClCompile Include="LeitorArquivo.cpp">
+      <Filter>Resource Files\Leitura de Arquivos</Filter>
     </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>

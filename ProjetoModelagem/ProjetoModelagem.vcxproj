@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="csparse.cpp" />
+    <ClCompile Include="LeitorArquivo.cpp" />
     <ClCompile Include="ManipulaVetorBinario.cpp" />
     <ClCompile Include="MatrizEsparsa.cpp" />
     <ClCompile Include="MatrizSistema.cpp" />
