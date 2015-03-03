@@ -19,51 +19,77 @@
     <Filter Include="Resource Files\Estruturas de dados">
       <UniqueIdentifier>{2cdaae3e-740a-4935-b86d-a9c5566b8788}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Criação Matriz do Sistema">
+    <Filter Include="Resource Files\Manipulação Arquivo">
+      <UniqueIdentifier>{d0d05a6b-ca2e-40b4-b507-c98ea98ebab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Manipulação Arquivo">
+      <UniqueIdentifier>{f11115e8-208d-4622-917f-d11b89573c3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Criação Matriz de Transições">
       <UniqueIdentifier>{0d9c6717-aa39-481d-9907-5169b7719724}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Criação Matriz do Sistema">
+    <Filter Include="Resource Files\Criação Matriz de Transições">
       <UniqueIdentifier>{a198cfd1-9fbb-44e8-8844-564bc66d41aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Leitura de Arquivos">
-      <UniqueIdentifier>{b674d7ce-03ff-4340-90e9-ef29c5bb5575}</UniqueIdentifier>
+    <Filter Include="Header Files\Manipulação Vetor">
+      <UniqueIdentifier>{6a430357-9dce-4629-885d-c031b6be52a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Manipulação Vetor">
+      <UniqueIdentifier>{f6cf5bab-9c66-469a-94ba-3ce034415e85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exibição">
+      <UniqueIdentifier>{bc50e278-b633-488d-aa15-2396aa1b7f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Exibição">
+      <UniqueIdentifier>{273ad983-c8f7-4680-9d49-ac95e96bd231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos">
+      <UniqueIdentifier>{6a55ebc8-e0d8-432a-b885-05568c358d32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ManipulaVetorBinario.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Principal.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrizSistema.cpp">
-      <Filter>Resource Files\Criação Matriz do Sistema</Filter>
-    </ClCompile>
-    <ClCompile Include="MatrizEsparsa.cpp">
-      <Filter>Resource Files\Estruturas de dados</Filter>
     </ClCompile>
     <ClCompile Include="csparse.cpp">
       <Filter>Resource Files\Estruturas de dados</Filter>
     </ClCompile>
-    <ClCompile Include="LeitorArquivo.cpp">
-      <Filter>Resource Files\Leitura de Arquivos</Filter>
+    <ClCompile Include="MatrizTransicoes.cpp">
+      <Filter>Resource Files\Criação Matriz de Transições</Filter>
     </ClCompile>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ManipulaArquivo.cpp">
+      <Filter>Resource Files\Manipulação Arquivo</Filter>
+    </ClCompile>
+    <ClCompile Include="ManipulaVetorBinario.cpp">
+      <Filter>Resource Files\Manipulação Vetor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImprimeMatriz.cpp">
+      <Filter>Resource Files\Exibição</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ManipulaVetorBinario.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MatrizSistema.h">
-      <Filter>Header Files\Criação Matriz do Sistema</Filter>
-    </ClInclude>
-    <ClInclude Include="MatrizEsparsa.h">
-      <Filter>Header Files\Estruturas de dados</Filter>
-    </ClInclude>
     <ClInclude Include="csparse.h">
       <Filter>Header Files\Estruturas de dados</Filter>
     </ClInclude>
+    <ClInclude Include="MatrizTransicoes.h">
+      <Filter>Header Files\Criação Matriz de Transições</Filter>
+    </ClInclude>
+    <ClInclude Include="ManipulaArquivo.h">
+      <Filter>Header Files\Manipulação Arquivo</Filter>
+    </ClInclude>
+    <ClInclude Include="ManipulaVetorBinario.h">
+      <Filter>Header Files\Manipulação Vetor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImprimeMatriz.h">
+      <Filter>Header Files\Exibição</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MatrizAtivacao.txt">
+      <Filter>Arquivos</Filter>
+    </Text>
+    <Text Include="MatrizDesativacao.txt">
+      <Filter>Arquivos</Filter>
+    </Text>
   </ItemGroup>
 </Project>

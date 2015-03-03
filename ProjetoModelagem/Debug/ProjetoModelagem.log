@@ -1,9 +1,29 @@
-﻿Build started 11/02/2015 08:18:17.
-     1>Project "C:\Users\Isabella\Documents\GitHub\TPA-TP2\ProjetoModelagem\ProjetoModelagem.vcxproj" on node 2 (ClCompile target(s)).
+﻿Build started 02/03/2015 23:51:25.
+     1>Project "C:\Users\Isabella\Dropbox\Ifes\Novo Projeto Thanner Soares\ProjetoModelagem\ProjetoModelagem\ProjetoModelagem.vcxproj" on node 2 (Build target(s)).
        Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.Cpp.Platform.targets(44,5): error MSB8020: The builds tools for v120 (Platform Toolset = 'v120') cannot be found. To build using the v120 build tools, either click the Project menu or right-click the solution, and then select "Update VC++ Projects...". Install v120 to build using the v120 build tools.
-     1>Done Building Project "C:\Users\Isabella\Documents\GitHub\TPA-TP2\ProjetoModelagem\ProjetoModelagem.vcxproj" (ClCompile target(s)) -- FAILED.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ManipulaArquivo.cpp ManipulaVetorBinario.cpp MatrizTransicoes.cpp Principal.cpp csparse.cpp ImprimeMatriz.cpp
+         ImprimeMatriz.cpp
+         csparse.cpp
+     1>c:\users\isabella\dropbox\ifes\novo projeto thanner soares\projetomodelagem\projetomodelagem\csparse.cpp(105): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\isabella\dropbox\ifes\novo projeto thanner soares\projetomodelagem\projetomodelagem\csparse.cpp(1938): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\isabella\dropbox\ifes\novo projeto thanner soares\projetomodelagem\projetomodelagem\csparse.cpp(2130): warning C4101: 'j' : unreferenced local variable
+         Principal.cpp
+     1>c:\users\isabella\dropbox\ifes\novo projeto thanner soares\projetomodelagem\projetomodelagem\principal.cpp(37): warning C4018: '<' : signed/unsigned mismatch
+         MatrizTransicoes.cpp
+         ManipulaVetorBinario.cpp
+         ManipulaArquivo.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Isabella\Dropbox\Ifes\Novo Projeto Thanner Soares\ProjetoModelagem\Debug\ProjetoModelagem.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Isabella\Dropbox\Ifes\Novo Projeto Thanner Soares\ProjetoModelagem\Debug\ProjetoModelagem.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Isabella\Dropbox\Ifes\Novo Projeto Thanner Soares\ProjetoModelagem\Debug\ProjetoModelagem.lib" /MACHINE:X86 Debug\ManipulaArquivo.obj
+         Debug\ManipulaVetorBinario.obj
+         Debug\MatrizTransicoes.obj
+         Debug\Principal.obj
+         Debug\csparse.obj
+         Debug\ImprimeMatriz.obj
+         ProjetoModelagem.vcxproj -> C:\Users\Isabella\Dropbox\Ifes\Novo Projeto Thanner Soares\ProjetoModelagem\Debug\ProjetoModelagem.exe
+     1>Done Building Project "C:\Users\Isabella\Dropbox\Ifes\Novo Projeto Thanner Soares\ProjetoModelagem\ProjetoModelagem\ProjetoModelagem.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.12
+Time Elapsed 00:00:12.90

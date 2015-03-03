@@ -1,28 +1,188 @@
 # include <iostream>
 # include <queue>
+#include <vector>
 # include <string>
-# include "MatrizSistema.h"
-# include "MatrizEsparsa.h"
-# include <dsparse.h>
+#include <fstream>
+# include "ManipulaArquivo.h"
+# include "ImprimeMatriz.h"
+# include "MatrizTransicoes.h"
+# include "csparse.h"
 using namespace std;
 
-int main(void)
-{
-	/*
-	manipulaArquivo();
-	queue<matrizEsparsa*> listaMatrizesRestricao;
-	matrizEsparsa* matriz1 = geramatrizEsparsa(3);
-	matrizEsparsa* matriz2 = geramatrizEsparsa(3);
+// Definindo o total de acoes do modelo
+# define totalAcoes 3
 
-	listaMatrizesRestricao.push(matriz1);
-	listaMatrizesRestricao.push(matriz2);
-	*/
-	
-	//int matrizRestricao[3][3] = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
-	int numeroTarefas = 3;
-	matrizEsparsa* matrizRestricao = geraMatrizEsparsa(numeroTarefas);
-	matrizEsparsa* matrizSistema = geraMatrizSistema(matrizRestricao);
-	imprimeMatrizEsparsa(matrizSistema, 8);
+// Estrutura de dados que representa uma Aresta.
+typedef struct {
+
+	int origem;
+	int destino;
+
+} Aresta;
+
+// Funcao para exibir os dados da Aresta no formato origem -> destino.
+string to_string(Aresta aresta){
+
+	string str = aresta.origem + " -> " + aresta.destino;
+	return str + ";";
+
+}
+
+// Funcao para gerar um arquivo com as definições do grafo no formato de visualizacao.
+void gerar_arquivo(string nome_arquivo, vector<Aresta> grafo){
+
+	ofstream escritor;
+	escritor.open(nome_arquivo);
+	escritor<<"digraph G {\n";
+	for(int index=0; index<grafo.size(); index++){
+		escritor<<"\t";
+		escritor<<to_string(grafo.at(index));
+		escritor<<"\n";
+	}
+	escritor<<"}\n";
+	escritor.close();
+
+}
+
+// Programa principal
+int main(void){	
+
+	// Captura de um arquivo a Matriz de Ativacao
+	int** matrizAtivacao = leMatrizArquivo("MatrizAtivacao.txt", totalAcoes);
+	// Exibe Matriz de Ativacao
+	cout << "Matriz de Ativacao" << endl;
+	exibeMatrizDinamica(matrizAtivacao, totalAcoes);
+
+	// Captura de um arquivo a Matriz de Desativacao
+	int** matrizDesativacao = leMatrizArquivo("MatrizDesativacao.txt", totalAcoes);
+	// Exibe Matriz de Desativacao
+	cout << "Matriz de Desativacao" << endl;
+	exibeMatrizDinamica(matrizDesativacao, totalAcoes);
+
+	// Gerando a Matriz de Transicoes
+	cs* matrizTransicoes = geraMatrizTransicoes(matrizAtivacao, matrizDesativacao, totalAcoes);
+	// Exibe Matriz de Desativacao
+	cout << "Matriz de Transicoes" << endl;
+	cs_print(matrizTransicoes, 0);
+
+	// Lista de arestas do grafo
+	vector<Aresta> grafo;
+	// Lista de arestas do grafo
+	vector<Aresta> fechoReflexivo;
+	// Lista de arestas do grafo
+	vector<Aresta> fechoSimetrico;
+	// Lista de arestas do grafo
+	vector<Aresta> fechoTransitivo;
+	// Lista de arestas do grafo
+	vector<Aresta> caminho;
+
+	int marcacao;
+
+	// Inicializacao do grafo
+	for(int linha = 0; linha< totalAcoes; linha++){
+		for(int coluna = 0; coluna< totalAcoes; linha++){
+			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
+			if(marcacao != 0){
+				Aresta aresta;
+				aresta.origem = linha;
+				aresta.destino = coluna;
+				grafo.push_back(aresta);
+			}
+		}
+	}
+
+	// Gera o arquivo de visualizacao do grafo
+	gerar_arquivo("grafo-completo.dot", grafo);
+
+	// ITENS 1 E 3
+	// Selecao do fecho reflexivo
+	for(int linha = 0; linha< totalAcoes; linha++){
+		marcacao = (int) getEntry(matrizTransicoes, linha, linha);
+		if(marcacao != 0){
+			Aresta aresta;
+			aresta.origem = linha;
+			aresta.destino = linha;
+			fechoReflexivo.push_back(aresta);
+		}
+	}
+  
+	// Verificacao da reflexividade da relacao
+	if(!fechoReflexivo.empty()){
+		cout << "\n- A relacao eh reflexiva." << endl;
+		gerar_arquivo("fecho-reflexivo.dot", fechoReflexivo);
+	}
+
+	// Verificacao da irreflexividade da relacao
+	int ehIrreflexiva = 1;
+	for(int linha = 0; linha< totalAcoes; linha++){
+		marcacao = (int) getEntry(matrizTransicoes, linha, linha);
+		if(marcacao != 0){
+			ehIrreflexiva = 0;
+			break;
+		}
+	}
+	if(ehIrreflexiva == 0){
+		cout << "\n- A relacao eh irreflexiva." << endl;
+	}
+  
+	// Selecao do fecho simetrico
+	for(int linha = 0; linha< totalAcoes; linha++){
+		for(int coluna = 0; coluna< totalAcoes; linha++){
+			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
+			if(marcacao != 0){
+				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
+				if(marcacao != 0){
+					Aresta aresta;
+					aresta.origem = linha;
+					aresta.destino = coluna;
+					fechoReflexivo.push_back(aresta);
+				}
+			}
+		}
+	}
+
+	// Verificacao da simetria da relacao
+	if(!fechoReflexivo.empty()){
+		cout << "\n- A relacao eh reflexiva." << endl;
+		gerar_arquivo("fecho-reflexivo.dot", fechoReflexivo);
+	}
+
+	// Verificacao da anti-simetria da relacao
+	for(int linha = 0; linha< totalAcoes; linha++){
+		for(int coluna = 0; coluna< totalAcoes; linha++){
+			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
+			if(marcacao != 0){
+				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
+				if(marcacao != 0){
+					Aresta aresta;
+					aresta.origem = linha;
+					aresta.destino = coluna;
+					fechoReflexivo.push_back(aresta);
+				}
+			}
+		}
+	}
+
+	// Selecao do fecho transitivo
+  
+	// Verificacao da transitividade da relacao
+   
+	// ITEM 2
+	// Verificacao se a relacao eh equivalente
+  
+	// Verificacao se a relacao eh de ordem parcial
+  
+	// ITEM 4
+	// Verifica se o sistema eh capaz de retornar ao estado inicial
+  
+	// ITEM 5
+	// Encontra o caminho entre dois nós
+
+	/* Limpando Matrizes */
+	free(matrizAtivacao);
+	free(matrizDesativacao);
+	cs_spfree(matrizTransicoes);
+
 	system("PAUSE > null");
 	return 0;
 }

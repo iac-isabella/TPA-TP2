@@ -1,5 +1,4 @@
+using namespace std;
 
-struct regras;
+int** leMatrizArquivo(char* endereco, int tam);
 
-/* Manipula as regras vindas de um arquivo colocando o texto da regra na devida lista correspondente a regra */
-void manipulaArquivo();

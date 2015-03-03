@@ -12,14 +12,13 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7FC1AD39-C0FE-4467-B4FE-C44D40935E47}</ProjectGuid>
-    <RootNamespace>TPA-TP2</RootNamespace>
-    <ProjectName>TPA-TP2</ProjectName>
+    <RootNamespace>ProjetoModelagem</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -65,19 +64,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="csparse.cpp" />
-    <ClCompile Include="LeitorArquivo.cpp" />
+    <ClCompile Include="ManipulaArquivo.cpp" />
     <ClCompile Include="ManipulaVetorBinario.cpp" />
-    <ClCompile Include="MatrizEsparsa.cpp" />
-    <ClCompile Include="MatrizSistema.cpp" />
+    <ClCompile Include="MatrizTransicoes.cpp" />
     <ClCompile Include="Principal.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="csparse.cpp" />
+    <ClCompile Include="ImprimeMatriz.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImprimeMatriz.h" />
+    <ClInclude Include="ManipulaArquivo.h" />
     <ClInclude Include="csparse.h" />
     <ClInclude Include="ManipulaVetorBinario.h" />
-    <ClInclude Include="MatrizEsparsa.h" />
-    <ClInclude Include="MatrizSistema.h" />
+    <ClInclude Include="MatrizTransicoes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MatrizAtivacao.txt" />
+    <Text Include="MatrizDesativacao.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

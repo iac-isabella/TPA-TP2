@@ -1,0 +1,1 @@
+void exibeMatrizDinamica(int** matriz, int tam);

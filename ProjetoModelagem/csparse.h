@@ -1,6 +1,6 @@
 #ifndef _CS_H
 #define _CS_H
-
+#define nullptr '\0'
 #ifdef MATLAB_MEX_FILE
 #include "mex.h"
 #endif
@@ -9,7 +9,10 @@
 #define CS_SUBSUB 0
 #define CS_DATE "Mar 6, 2006"	    /* CSparse release date */
 #define CS_COPYRIGHT "Copyright (c) Timothy A. Davis, 2006"
-
+#include <stddef.h>
+#include <stdio.h>
+#include <io.h>
+#include <stdlib.h>
 /* --- primary CSparse routines and data structures ------------------------- */
 typedef struct cs_sparse    /* matrix in compressed-column or triplet form */
 {
@@ -43,7 +46,9 @@ cs *cs_spalloc(int m, int n, int nzmax, int values, int triplet);
 cs *cs_spfree(cs *A);
 int cs_sprealloc(cs *A, int nzmax);
 void *cs_malloc(int n, size_t size);
-
+double getEntry(cs *T, int r, int c);
+int  updateEntry(cs *T, int r, int c, double value);
+int cs_printMformat(const cs *A, int brief);
 /* --- secondary CSparse routines and data structures ----------------------- */
 typedef struct cs_symbolic  /* symbolic Cholesky, LU, or QR analysis */
 {
@@ -74,7 +79,7 @@ typedef struct cs_dmperm_results    /* cs_dmperm or cs_scc output */
 	int rr[5];    /* coarse row decomposition */
 	int cc[5];    /* coarse column decomposition */
 } csd;
-
+typedef int csi;
 int *cs_amd(const cs *A, int order);
 csn *cs_chol(const cs *A, const css *S);
 csd *cs_dmperm(const cs *A);
@@ -132,6 +137,3 @@ csd *cs_ddone(csd *D, cs *C, void *w, int ok);
 #define CS_MARK(Ap,j) { Ap [j] = CS_FLIP (Ap [j]) ; }
 #define CS_OVERFLOW(n,size) (n > INT_MAX / (int) size)
 #endif
-
-////////////////////////////////////////////////////////
-int cs_print(const cs *A);
