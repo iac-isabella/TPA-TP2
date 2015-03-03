@@ -23,8 +23,12 @@ typedef struct {
 // Funcao para exibir os dados da Aresta no formato origem -> destino.
 string to_string(Aresta aresta){
 
-	string str = aresta.origem + " -> " + aresta.destino;
-	return str + ";";
+	string str = "";
+	str += std::to_string(aresta.origem);
+	str += " -> ";
+	str += std::to_string(aresta.destino);
+	str += ";";
+	return str;
 
 }
 
@@ -80,7 +84,7 @@ int main(void){
 
 	// Inicializacao do grafo
 	for(int linha = 0; linha< totalAcoes; linha++){
-		for(int coluna = 0; coluna< totalAcoes; linha++){
+		for(int coluna = 0; coluna< totalAcoes; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				Aresta aresta;
@@ -113,21 +117,17 @@ int main(void){
 	}
 
 	// Verificacao da irreflexividade da relacao
-	int ehIrreflexiva = 1;
 	for(int linha = 0; linha< totalAcoes; linha++){
 		marcacao = (int) getEntry(matrizTransicoes, linha, linha);
 		if(marcacao != 0){
-			ehIrreflexiva = 0;
+			cout << "\n- A relacao nao eh irreflexiva." << endl;
 			break;
 		}
-	}
-	if(ehIrreflexiva == 0){
-		cout << "\n- A relacao eh irreflexiva." << endl;
 	}
   
 	// Selecao do fecho simetrico
 	for(int linha = 0; linha< totalAcoes; linha++){
-		for(int coluna = 0; coluna< totalAcoes; linha++){
+		for(int coluna = 0; coluna< totalAcoes; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
@@ -135,45 +135,60 @@ int main(void){
 					Aresta aresta;
 					aresta.origem = linha;
 					aresta.destino = coluna;
-					fechoReflexivo.push_back(aresta);
+					fechoSimetrico.push_back(aresta);
 				}
 			}
 		}
 	}
 
 	// Verificacao da simetria da relacao
-	if(!fechoReflexivo.empty()){
-		cout << "\n- A relacao eh reflexiva." << endl;
-		gerar_arquivo("fecho-reflexivo.dot", fechoReflexivo);
+	if(!fechoSimetrico.empty()){
+		cout << "\n- A relacao eh simetrica." << endl;
+		gerar_arquivo("fecho-simetrico.dot", fechoReflexivo);
 	}
 
 	// Verificacao da anti-simetria da relacao
+	int eh_anti_simetrica = 0;
 	for(int linha = 0; linha< totalAcoes; linha++){
-		for(int coluna = 0; coluna< totalAcoes; linha++){
+		for(int coluna = 0; coluna< totalAcoes; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
 				if(marcacao != 0){
-					Aresta aresta;
-					aresta.origem = linha;
-					aresta.destino = coluna;
-					fechoReflexivo.push_back(aresta);
+					if(linha != coluna){
+						cout << "\n- A relacao eh anti-simetrica." << endl;
+						eh_anti_simetrica = 1;
+						break;
+					}
 				}
 			}
 		}
 	}
 
 	// Selecao do fecho transitivo
-  
+	
+
 	// Verificacao da transitividade da relacao
-   
+	if(!fechoTransitivo.empty()){
+		cout << "\n- A relacao eh transitiva." << endl;
+		gerar_arquivo("fecho-transitivo.dot", fechoReflexivo);
+	}
+
 	// ITEM 2
 	// Verificacao se a relacao eh equivalente
+	if(fechoReflexivo.empty() || fechoSimetrico.empty() || fechoTransitivo.empty()){
+		cout << "\n- A relacao nao eh equivalente." << endl;
+	}
+
   
 	// Verificacao se a relacao eh de ordem parcial
+	if(fechoReflexivo.empty() || (eh_anti_simetrica == 0) || fechoTransitivo.empty()){
+		cout << "\n- A relacao nao eh de ordem." << endl;
+	}
   
 	// ITEM 4
 	// Verifica se o sistema eh capaz de retornar ao estado inicial
+
   
 	// ITEM 5
 	// Encontra o caminho entre dois nós
