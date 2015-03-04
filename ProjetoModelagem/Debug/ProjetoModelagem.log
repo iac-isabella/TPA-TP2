@@ -1,10 +1,12 @@
-﻿Build started 03/03/2015 10:11:57.
+﻿Build started 03/03/2015 23:04:24.
      1>Project "C:\Users\Isabella\Documents\GitHub\TPA-TP2\ProjetoModelagem\ProjetoModelagem.vcxproj" on node 2 (Build target(s)).
        Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Principal.cpp
          Principal.cpp
-     1>c:\users\isabella\documents\github\tpa-tp2\projetomodelagem\principal.cpp(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\isabella\documents\github\tpa-tp2\projetomodelagem\principal.cpp(51): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\isabella\documents\github\tpa-tp2\projetomodelagem\principal.cpp(64): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\isabella\documents\github\tpa-tp2\projetomodelagem\principal.cpp(206): warning C4101: 'u' : unreferenced local variable
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Isabella\Documents\GitHub\TPA-TP2\Debug\ProjetoModelagem.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Isabella\Documents\GitHub\TPA-TP2\Debug\ProjetoModelagem.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Isabella\Documents\GitHub\TPA-TP2\Debug\ProjetoModelagem.lib" /MACHINE:X86 Debug\ManipulaArquivo.obj
          Debug\ManipulaVetorBinario.obj
@@ -17,4 +19,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.26
+Time Elapsed 00:00:06.44

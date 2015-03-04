@@ -3,6 +3,7 @@
 #include <vector>
 # include <string>
 #include <fstream>
+#include<math.h>
 # include "ManipulaArquivo.h"
 # include "ImprimeMatriz.h"
 # include "MatrizTransicoes.h"
@@ -19,6 +20,15 @@ typedef struct {
 	int destino;
 
 } Aresta;
+
+// Estrutura de dados que representa um Vertice.
+typedef struct {
+
+	int estado;
+	int predecessor;
+	int visitado;
+
+} Vertice;
 
 // Funcao para exibir os dados da Aresta no formato origem -> destino.
 string to_string(Aresta aresta){
@@ -46,6 +56,22 @@ void gerar_arquivo(string nome_arquivo, vector<Aresta> grafo){
 	escritor<<"}\n";
 	escritor.close();
 
+}
+
+vector<Vertice> montar_lista_adjacencias(int estado, vector<Aresta> grafo){
+	vector<Vertice> adjacencias;
+	Aresta a;
+	for(int index=0; index<grafo.size(); index++){
+		a = grafo.at(index);
+		if(a.origem == estado){
+			Vertice v;
+			v.estado = a.destino;
+			v.predecessor = a.origem;
+			v.visitado = 0;
+			adjacencias.push_back(v);
+		}
+	}
+	return adjacencias;
 }
 
 // Programa principal
@@ -81,10 +107,11 @@ int main(void){
 	vector<Aresta> caminho;
 
 	int marcacao;
+	int totalEstados = (int) pow(2, totalAcoes);
 
 	// Inicializacao do grafo
-	for(int linha = 0; linha< totalAcoes; linha++){
-		for(int coluna = 0; coluna< totalAcoes; coluna++){
+	for(int linha = 0; linha< totalEstados; linha++){
+		for(int coluna = 0; coluna< totalEstados; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				Aresta aresta;
@@ -100,34 +127,34 @@ int main(void){
 
 	// ITENS 1 E 3
 	// Selecao do fecho reflexivo
-	for(int linha = 0; linha< totalAcoes; linha++){
+	int reflexivo = 1;
+	for(int linha = 0; linha< totalEstados; linha++){
 		marcacao = (int) getEntry(matrizTransicoes, linha, linha);
 		if(marcacao != 0){
 			Aresta aresta;
 			aresta.origem = linha;
 			aresta.destino = linha;
 			fechoReflexivo.push_back(aresta);
+		} else{
+			reflexivo = 0;
 		}
 	}
   
 	// Verificacao da reflexividade da relacao
 	if(!fechoReflexivo.empty()){
-		cout << "\n- A relacao eh reflexiva." << endl;
+		if(reflexivo != 0){
+			cout << "\n- A relacao eh reflexiva." << endl;
+		}
 		gerar_arquivo("fecho-reflexivo.dot", fechoReflexivo);
+	} else{
+		// Verificacao da irreflexividade da relacao
+		cout << "\n- A relacao eh irreflexiva." << endl;
 	}
 
-	// Verificacao da irreflexividade da relacao
-	for(int linha = 0; linha< totalAcoes; linha++){
-		marcacao = (int) getEntry(matrizTransicoes, linha, linha);
-		if(marcacao != 0){
-			cout << "\n- A relacao nao eh irreflexiva." << endl;
-			break;
-		}
-	}
-  
 	// Selecao do fecho simetrico
-	for(int linha = 0; linha< totalAcoes; linha++){
-		for(int coluna = 0; coluna< totalAcoes; coluna++){
+	int simetrico = 1;
+	for(int linha = 0; linha< totalEstados; linha++){
+		for(int coluna = 0; coluna< totalEstados; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
@@ -136,6 +163,8 @@ int main(void){
 					aresta.origem = linha;
 					aresta.destino = coluna;
 					fechoSimetrico.push_back(aresta);
+				} else{
+					simetrico = 0;
 				}
 			}
 		}
@@ -143,22 +172,26 @@ int main(void){
 
 	// Verificacao da simetria da relacao
 	if(!fechoSimetrico.empty()){
-		cout << "\n- A relacao eh simetrica." << endl;
+		if(simetrico != 0){
+			cout << "\n- A relacao eh simetrica." << endl;
+		}
 		gerar_arquivo("fecho-simetrico.dot", fechoReflexivo);
+	} else{
+		// Verificacao da assimetria da relacao
+		cout << "\n- A relacao eh assimetrica." << endl;
 	}
 
 	// Verificacao da anti-simetria da relacao
-	int eh_anti_simetrica = 0;
-	for(int linha = 0; linha< totalAcoes; linha++){
-		for(int coluna = 0; coluna< totalAcoes; coluna++){
+	int antiSimetrico = 0;
+	for(int linha = 0; linha< totalEstados && antiSimetrico == 0; linha++){
+		for(int coluna = 0; coluna< totalEstados && antiSimetrico == 0; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
 				if(marcacao != 0){
 					if(linha != coluna){
 						cout << "\n- A relacao eh anti-simetrica." << endl;
-						eh_anti_simetrica = 1;
-						break;
+						antiSimetrico = 1;
 					}
 				}
 			}
@@ -166,29 +199,71 @@ int main(void){
 	}
 
 	// Selecao do fecho transitivo
-	
+	int transitivo = 1;
+	if(grafo.size()>0){
+		vector<Vertice> vertices;
+		queue<int> fila;
+		int u;
+		for(int index = 0; index<totalEstados; index++){
+			Vertice v;
+			v.estado = index;
+			v.predecessor = -1;
+			v.visitado = 0;
+			vertices.push_back(v);
+		}
+		fila.push(0);
+		while (!fila.empty()){
+			u = fila.front();
+			vector<Vertice> adj = montar_lista_adjacencias(u, grafo);
+			for(int i = 0; i<adj.size(); i++){
+
+			}
+			fila.pop();
+		}
+  enquanto Q não está vazia faça
+      u := PRIMEIRO-DA-FILA(Q)
+      para cada v em Adj[u] faça
+          se dist[u] + len(u,v) < dist[v] então
+            estado[v] := ROTULADO
+            dist[v] := dist[u]+len(u,v)
+            pred[v] := u
+            se v não está em Q então 
+              INSIRA-NA-FILA(Q,v)
+      REMOVA-DA-FILA(Q)
+      estado[u] := EXAMINADO
+  devolva dist e pred
+	} else{
+		transitivo = 0;
+	}
+
 
 	// Verificacao da transitividade da relacao
 	if(!fechoTransitivo.empty()){
-		cout << "\n- A relacao eh transitiva." << endl;
+		if(transitivo != 0){
+			cout << "\n- A relacao eh transitiva." << endl;
+		}
 		gerar_arquivo("fecho-transitivo.dot", fechoReflexivo);
 	}
 
 	// ITEM 2
 	// Verificacao se a relacao eh equivalente
-	if(fechoReflexivo.empty() || fechoSimetrico.empty() || fechoTransitivo.empty()){
+	if((reflexivo == 0) || (simetrico == 0) || (transitivo == 0)){
 		cout << "\n- A relacao nao eh equivalente." << endl;
+	} else{
+		cout << "\n- A relacao eh equivalente." << endl;
 	}
 
   
 	// Verificacao se a relacao eh de ordem parcial
-	if(fechoReflexivo.empty() || (eh_anti_simetrica == 0) || fechoTransitivo.empty()){
+	if((reflexivo == 0) || (antiSimetrico == 0) || (transitivo == 0)){
+		cout << "\n- A relacao nao eh de ordem." << endl;
+	} else{
 		cout << "\n- A relacao nao eh de ordem." << endl;
 	}
   
 	// ITEM 4
 	// Verifica se o sistema eh capaz de retornar ao estado inicial
-
+	
   
 	// ITEM 5
 	// Encontra o caminho entre dois nós
@@ -197,6 +272,8 @@ int main(void){
 	free(matrizAtivacao);
 	free(matrizDesativacao);
 	cs_spfree(matrizTransicoes);
+
+	cout << "\nProcessamento concluido." << endl;
 
 	system("PAUSE > null");
 	return 0;
