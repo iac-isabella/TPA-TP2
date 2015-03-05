@@ -13,6 +13,9 @@ using namespace std;
 // Definindo o total de acoes do modelo
 # define totalAcoes 3
 
+# define branco 0
+# define cinza 1
+
 // Estrutura de dados que representa uma Aresta.
 typedef struct {
 
@@ -48,7 +51,7 @@ void gerar_arquivo(string nome_arquivo, vector<Aresta> grafo){
 	ofstream escritor;
 	escritor.open(nome_arquivo);
 	escritor<<"digraph G {\n";
-	for(int index=0; index<grafo.size(); index++){
+	for(int index=0; index < grafo.size(); index++){
 		escritor<<"\t";
 		escritor<<to_string(grafo.at(index));
 		escritor<<"\n";
@@ -58,20 +61,25 @@ void gerar_arquivo(string nome_arquivo, vector<Aresta> grafo){
 
 }
 
-vector<Vertice> montar_lista_adjacencias(int estado, vector<Aresta> grafo){
-	vector<Vertice> adjacencias;
-	Aresta a;
-	for(int index=0; index<grafo.size(); index++){
-		a = grafo.at(index);
-		if(a.origem == estado){
-			Vertice v;
-			v.estado = a.destino;
-			v.predecessor = a.origem;
-			v.visitado = 0;
-			adjacencias.push_back(v);
+void visitar(int u, cs* matriz, int n, int* cor, int* pred){
+	int v, i;
+	cor[u] = cinza;
+    for(v =0; v<n; v++){
+   		if((int) getEntry(matriz, u, v) != 0) {
+			if (cor[v] == branco){
+		        pred[v] = u;
+		        visitar(v,matriz,n, cor, pred);
+			}
 		}
 	}
-	return adjacencias;
+}
+
+void VisitaEmProfundidade(cs* matriz, int n, int estadoInicial, int* cor, int* pred){
+  for (int i =0;i<n;i++){
+	cor[i]= branco;
+	pred[i]=0;
+  }
+  visitar(estadoInicial,matriz,n, cor, pred);
 }
 
 // Programa principal
@@ -175,7 +183,7 @@ int main(void){
 		if(simetrico != 0){
 			cout << "\n- A relacao eh simetrica." << endl;
 		}
-		gerar_arquivo("fecho-simetrico.dot", fechoReflexivo);
+		gerar_arquivo("fecho-simetrico.dot", fechoSimetrico);
 	} else{
 		// Verificacao da assimetria da relacao
 		cout << "\n- A relacao eh assimetrica." << endl;
@@ -200,42 +208,55 @@ int main(void){
 
 	// Selecao do fecho transitivo
 	int transitivo = 1;
-	if(grafo.size()>0){
-		vector<Vertice> vertices;
-		queue<int> fila;
-		int u;
-		for(int index = 0; index<totalEstados; index++){
-			Vertice v;
-			v.estado = index;
-			v.predecessor = -1;
-			v.visitado = 0;
-			vertices.push_back(v);
-		}
-		fila.push(0);
-		while (!fila.empty()){
-			u = fila.front();
-			vector<Vertice> adj = montar_lista_adjacencias(u, grafo);
-			for(int i = 0; i<adj.size(); i++){
+	Aresta a;
+	Aresta b;
+	Aresta c;
+	// Para cada aresta do grafo
+	for (int i = 0; i<grafo.size(); i++){
+		vector<Aresta> adjOrigem;
+		vector<Aresta> adjDestino;
+		int cont = 0;
+		a = grafo.at(i);
 
+		// Para cada aresta do grafo
+		for (int j = 0; j<grafo.size(); j++){
+			b = grafo.at(j);
+			// Verifica se a aresta b tem a mesma origem da aresta a e inclui na lista de adjacentes a origem
+			if (b.origem == a.origem && j!=i && b.origem != b.destino){
+				Aresta aresta;
+				aresta.origem = b.origem;
+				aresta.destino = b.destino;
+				adjOrigem.push_back(aresta);
+			} else{
+				// Verifica se a aresta b tem o mesmo destino da aresta a e inclui na lista de adjacentes ao destino
+				if (b.destino == a.destino && j!=i  && b.origem != b.destino){
+					Aresta aresta;
+					aresta.origem = b.origem;
+					aresta.destino = b.destino;
+					adjDestino.push_back(aresta);
+				}
 			}
-			fila.pop();
 		}
-  enquanto Q não está vazia faça
-      u := PRIMEIRO-DA-FILA(Q)
-      para cada v em Adj[u] faça
-          se dist[u] + len(u,v) < dist[v] então
-            estado[v] := ROTULADO
-            dist[v] := dist[u]+len(u,v)
-            pred[v] := u
-            se v não está em Q então 
-              INSIRA-NA-FILA(Q,v)
-      REMOVA-DA-FILA(Q)
-      estado[u] := EXAMINADO
-  devolva dist e pred
-	} else{
-		transitivo = 0;
+		// Procura nas listas de adjacentes a origem e destino, quais arestas tem em comum o destino e a origem e inclui no fecho
+		for (int j = 0; j<adjOrigem.size(); j++){
+			b = adjOrigem.at(j);
+			for (int k = 0; k<adjDestino.size(); k++){
+				c = adjDestino.at(k);
+				if (b.destino == c.origem){
+					fechoTransitivo.push_back(b);
+					fechoTransitivo.push_back(c);
+					cont++;
+				}
+			}
+		}
+		// Inclui a aresta a no fecho se a relação eh valida
+		if (cont>0){
+			fechoTransitivo.push_back(a);
+		}
+		else{
+			transitivo = 0;
+		}
 	}
-
 
 	// Verificacao da transitividade da relacao
 	if(!fechoTransitivo.empty()){
@@ -263,10 +284,28 @@ int main(void){
   
 	// ITEM 4
 	// Verifica se o sistema eh capaz de retornar ao estado inicial
-	
+	int* cor = (int*) malloc(totalEstados*sizeof(int));
+	int* pred = (int*) malloc(totalEstados*sizeof(int));
+	if(cor != NULL && pred != NULL){
+		VisitaEmProfundidade(matrizTransicoes, totalEstados, 1, cor, pred);
+		int reset = 0;
+		for(int i = 0; i<totalEstados; i++){
+			if(pred[i] == 1){
+				reset = 1;
+				break;
+			}
+		}
+		if(reset == 1){
+			cout << "\n- o sistema eh reiniciavel." << endl;
+		}
+	}
   
 	// ITEM 5
 	// Encontra o caminho entre dois nós
+	cout << "\n- Mostrando estados alcancaveis a partir da origem:" << endl;
+	for(int i = 0; i<totalEstados; i++){
+		cout << pred[i] << endl;
+	}
 
 	/* Limpando Matrizes */
 	free(matrizAtivacao);
