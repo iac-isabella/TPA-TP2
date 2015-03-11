@@ -24,15 +24,6 @@ typedef struct {
 
 } Aresta;
 
-// Estrutura de dados que representa um Vertice.
-typedef struct {
-
-	int estado;
-	int predecessor;
-	int visitado;
-
-} Vertice;
-
 // Funcao para exibir os dados da Aresta no formato origem -> destino.
 string to_string(Aresta aresta){
 
@@ -62,7 +53,7 @@ void gerar_arquivo(string nome_arquivo, vector<Aresta> grafo){
 }
 
 void visitar(int u, cs* matriz, int n, int* cor, int* pred){
-	int v, i;
+	int v;
 	cor[u] = cinza;
     for(v =0; v<n; v++){
    		if((int) getEntry(matriz, u, v) != 0) {
@@ -74,7 +65,7 @@ void visitar(int u, cs* matriz, int n, int* cor, int* pred){
 	}
 }
 
-void VisitaEmProfundidade(cs* matriz, int n, int estadoInicial, int* cor, int* pred){
+void busca_em_profundidade(cs* matriz, int n, int estadoInicial, int* cor, int* pred){
   for (int i =0;i<n;i++){
 	cor[i]= branco;
 	pred[i]=0;
@@ -118,8 +109,8 @@ int main(void){
 	int totalEstados = (int) pow(2, totalAcoes);
 
 	// Inicializacao do grafo
-	for(int linha = 0; linha< totalEstados; linha++){
-		for(int coluna = 0; coluna< totalEstados; coluna++){
+	for(int linha = 1; linha<= totalEstados; linha++){
+		for(int coluna = 1; coluna<= totalEstados; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				Aresta aresta;
@@ -136,7 +127,7 @@ int main(void){
 	// ITENS 1 E 3
 	// Selecao do fecho reflexivo
 	int reflexivo = 1;
-	for(int linha = 0; linha< totalEstados; linha++){
+	for(int linha = 1; linha<= totalEstados; linha++){
 		marcacao = (int) getEntry(matrizTransicoes, linha, linha);
 		if(marcacao != 0){
 			Aresta aresta;
@@ -161,8 +152,8 @@ int main(void){
 
 	// Selecao do fecho simetrico
 	int simetrico = 1;
-	for(int linha = 0; linha< totalEstados; linha++){
-		for(int coluna = 0; coluna< totalEstados; coluna++){
+	for(int linha = 1; linha<= totalEstados; linha++){
+		for(int coluna = 1; coluna<= totalEstados; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
@@ -191,8 +182,8 @@ int main(void){
 
 	// Verificacao da anti-simetria da relacao
 	int antiSimetrico = 0;
-	for(int linha = 0; linha< totalEstados && antiSimetrico == 0; linha++){
-		for(int coluna = 0; coluna< totalEstados && antiSimetrico == 0; coluna++){
+	for(int linha = 1; linha<= totalEstados && antiSimetrico == 0; linha++){
+		for(int coluna = 1; coluna<= totalEstados && antiSimetrico == 0; coluna++){
 			marcacao = (int) getEntry(matrizTransicoes, linha, coluna);
 			if(marcacao != 0){
 				marcacao = (int) getEntry(matrizTransicoes, coluna, linha);
@@ -263,7 +254,7 @@ int main(void){
 		if(transitivo != 0){
 			cout << "\n- A relacao eh transitiva." << endl;
 		}
-		gerar_arquivo("fecho-transitivo.dot", fechoReflexivo);
+		gerar_arquivo("fecho-transitivo.dot", fechoTransitivo);
 	}
 
 	// ITEM 2
@@ -287,7 +278,7 @@ int main(void){
 	int* cor = (int*) malloc(totalEstados*sizeof(int));
 	int* pred = (int*) malloc(totalEstados*sizeof(int));
 	if(cor != NULL && pred != NULL){
-		VisitaEmProfundidade(matrizTransicoes, totalEstados, 1, cor, pred);
+		busca_em_profundidade(matrizTransicoes, totalEstados, 1, cor, pred);
 		int reset = 0;
 		for(int i = 0; i<totalEstados; i++){
 			if(pred[i] == 1){
@@ -297,9 +288,15 @@ int main(void){
 		}
 		if(reset == 1){
 			cout << "\n- o sistema eh reiniciavel." << endl;
+			cout << "A partir dos estados:" << endl;
+			for(int i = 0; i<totalEstados; i++){
+				if(pred[i] != 1){
+					cout << i+1 << endl;
+				}
+			}
 		}
+		
 	}
-  
 	// ITEM 5
 	// Encontra o caminho entre dois nós
 	cout << "\n- Mostrando estados alcancaveis a partir da origem:" << endl;
